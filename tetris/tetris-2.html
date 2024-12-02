@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tetris Game</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #222;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+    .tetris-container {
+      display: flex;
+      gap: 20px;
+    }
+    .tetris {
+      display: grid;
+      grid-template-rows: repeat(20, 30px);
+      grid-template-columns: repeat(10, 30px);
+      gap: 1px;
+      background-color: #111;
+    }
+    .next-piece {
+      display: grid;
+      grid-template-rows: repeat(4, 30px);
+      grid-template-columns: repeat(4, 30px);
+      gap: 1px;
+      background-color: #111;
+    }
+    .cell {
+      width: 30px;
+      height: 30px;
+      background-color: #333;
+    }
+    .active {
+      background-color: #f44336;
+    }
+    .fixed {
+      background-color: #03a9f4;
+    }
+    .next {
+      background-color: #4caf50;
+    }
+    .score {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    .button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #555;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .button:active {
+      background: #777;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tetris Game</h1>
+  <div class="score">Score: <span id="score">0</span></div>
+  <div class="tetris-container">
+    <div class="tetris" id="tetris"></div>
+    <div>
+      <h3>Next Piece</h3>
+      <div class="next-piece" id="nextPiece"></div>
+    </div>
+  </div>
+  <div class="controls">
+    <button class="button" id="left">Left</button>
+    <button class="button" id="rotate">Rotate</button>
+    <button class="button" id="right">Right</button>
+    <button class="button" id="down">Down</button>
+  </div>
+  <script>
+    const tetris = document.getElementById('tetris');
+    const nextPieceDisplay = document.getElementById('nextPiece');
+    const scoreDisplay = document.getElementById('score');
+    const gridWidth = 10;
+    const gridHeight = 20;
+    const grid = [];
+    let nextPieceGrid = [];
+    let currentPiece = null;
+    let nextPiece = null;
+    let currentPosition = 4;
+    let currentRotation = 0;
+    let score = 0;
+    let timerId;
+
+    const tetrominoes = [
+      // I Tetromino
+      [
+        [1, gridWidth + 1, gridWidth * 2 + 1, gridWidth * 3 + 1],
+        [gridWidth, gridWidth + 1, gridWidth + 2, gridWidth + 3],
+        [1, gridWidth + 1, gridWidth * 2 + 1, gridWidth * 3 + 1],
+        [gridWidth, gridWidth + 1, gridWidth + 2, gridWidth + 3]
+      ],
+      // L Tetromino
+      [
+        [1, gridWidth + 1, gridWidth * 2 + 1, 2],
+        [gridWidth, gridWidth + 1, gridWidth + 2, gridWidth * 2 + 2],
+        [1, gridWidth + 1, gridWidth * 2 + 1, gridWidth * 2],
+        [gridWidth, gridWidth * 2, gridWidth * 2 + 1, gridWidth * 2 + 2]
+      ],
+      // T Tetromino
+      [
+        [1, gridWidth, gridWidth + 1, gridWidth + 2],
+        [1, gridWidth + 1, gridWidth * 2 + 1, gridWidth + 2],
+        [gridWidth, gridWidth + 1, gridWidth + 2, gridWidth * 2 + 1],
+        [1, gridWidth, gridWidth + 1, gridWidth * 2 + 1]
+      ],
+      // Z Tetromino
+      [
+        [0, gridWidth, gridWidth + 1, gridWidth * 2 + 1],
+        [1, gridWidth, gridWidth + 1, gridWidth + 2],
+        [0, gridWidth, gridWidth + 1, gridWidth * 2 + 1],
+        [1, gridWidth, gridWidth + 1, gridWidth + 2]
+      ],
+      // O Tetromino
+      [
+        [0, 1, gridWidth, gridWidth + 1],
+        [0, 1, gridWidth, gridWidth + 1],
+        [0, 1, gridWidth, gridWidth + 1],
+        [0, 1, gridWidth, gridWidth + 1]
+      ]
+    ];
+
+    function createGrid() {
+      for (let i = 0; i < gridWidth * gridHeight; i++) {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        tetris.appendChild(cell);
+        grid.push(cell);
+      }
+
+      for (let i = 0; i < 16; i++) {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        nextPieceDisplay.appendChild(cell);
+        nextPieceGrid.push(cell);
+      }
+    }
+
+    function draw() {
+      currentPiece[currentRotation].forEach(index => {
+        grid[currentPosition + index]?.classList.add('active');
+      });
+    }
+
+    function undraw() {
+      currentPiece[currentRotation].forEach(index => {
+        grid[currentPosition + index]?.classList.remove('active');
+      });
+    }
+
+    function drawNextPiece() {
+      nextPieceGrid.forEach(cell => cell.classList.remove('next'));
+      nextPiece[0].forEach(index => {
+        nextPieceGrid[index]?.classList.add('next');
+      });
+    }
+
+    function moveDown() {
+      undraw();
+      currentPosition += gridWidth;
+      if (isCollision()) {
+        currentPosition -= gridWidth;
+        freeze();
+        return;
+      }
+      draw();
+    }
+
+    function isCollision() {
+      return currentPiece[currentRotation].some(index => {
+        const newPos = currentPosition + index;
+        return (
+          newPos >= gridWidth * gridHeight || // Cek dasar grid
+          grid[newPos]?.classList.contains('fixed') // Benturan dengan blok tetap
+        );
+      });
+    }
+
+
+
+    function freeze() {
+      currentPiece[currentRotation].forEach(index =>
+        grid[currentPosition + index]?.classList.add('fixed')
+      );
+      removeCompleteRows();
+      startNewPiece();
+    }
+
+    function removeCompleteRows() {
+      for (let i = gridHeight - 1; i >= 0; i--) {
+        const row = Array.from({ length: gridWidth }, (_, j) => i * gridWidth + j);
+        if (row.every(index => grid[index]?.classList.contains('fixed'))) {
+          row.forEach(index => grid[index]?.classList.remove('fixed'));
+          grid.splice(i * gridWidth, gridWidth);
+          const emptyRow = Array.from({ length: gridWidth }, () => {
+            const cell = document.createElement('div');
+            cell.classList.add('cell');
+            return cell;
+          });
+          grid.unshift(...emptyRow);
+          tetris.innerHTML = '';
+          grid.forEach(cell => tetris.appendChild(cell));
+          score += 10;
+          scoreDisplay.textContent = score;
+          i++;
+        }
+      }
+    }
+
+    function startNewPiece() {
+      currentPosition = 4;
+      currentRotation = 0;
+      currentPiece = nextPiece;
+      nextPiece = tetrominoes[Math.floor(Math.random() * tetrominoes.length)];
+      drawNextPiece();
+      if (isCollision()) {
+        alert('Game Over!');
+        clearInterval(timerId);
+        document.removeEventListener('keydown', control);
+      }
+      draw();
+    }
+
+    function control(e) {
+      if (e.key === 'ArrowLeft') moveLeft();
+      if (e.key === 'ArrowRight') moveRight();
+      if (e.key === 'ArrowDown') moveDown();
+      if (e.key === 'ArrowUp') rotate();
+    }
+
+    function moveLeft() {
+        undraw();
+        currentPosition -= 1;
+        // Cek apakah ada benturan dengan sisi kiri dan pastikan tidak keluar dari grid
+        if (isCollision()) {
+            currentPosition += 1; // Kembalikan posisi jika ada benturan
+        }
+        draw();
+    }
+
+    function moveRight() {
+        undraw();
+        currentPosition += 1;
+        // Cek apakah ada benturan dengan sisi kanan dan pastikan tidak keluar dari grid
+        if (isCollision()) {
+            currentPosition -= 1; // Kembalikan posisi jika ada benturan
+        }
+        draw();
+    }
+
+
+    function rotate() {
+      undraw();
+      currentRotation = (currentRotation + 1) % 4;
+      if (isCollision()) currentRotation = (currentRotation - 1 + 4) % 4;
+      draw();
+    }
+
+    function init() {
+      createGrid();
+      nextPiece = tetrominoes[Math.floor(Math.random() * tetrominoes.length)];
+      startNewPiece();
+      document.addEventListener('keydown', control);
+      document.getElementById('left').addEventListener('click', moveLeft);
+      document.getElementById('right').addEventListener('click', moveRight);
+      document.getElementById('down').addEventListener('click', moveDown);
+      document.getElementById('rotate').addEventListener('click', rotate);
+      timerId = setInterval(moveDown, 500);
+    }
+
+    init();
+  </script>
+</body>
+</html>
