@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2048 Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>2048 Game</h1>
+    
+    <div class="game-info">
+      <div class="score-container">
+        <div class="score-box">
+          <span class="score-label">Score</span>
+          <span id="score">0</span>
+        </div>
+        <div class="score-box">
+          <span class="score-label">Best</span>
+          <span id="best-score">0</span>
+        </div>
+      </div>
+      <div class="controls">
+        <button id="new-game">New Game</button>
+        <button id="undo">Undo</button>
+      </div>
+    </div>
+
+    <div class="game-container">
+      <div id="grid"></div>
+    </div>
+
+    <div class="info-panel">
+      <p>Use arrow keys or WASD to move tiles</p>
+      <p>Join the numbers and get to the <strong>2048 tile!</strong></p>
+    </div>
+
+    <div id="game-over" class="modal hidden">
+      <div class="modal-content">
+        <h2>Game Over!</h2>
+        <p>Your Score: <span id="final-score">0</span></p>
+        <button id="restart">Play Again</button>
+      </div>
+    </div>
+
+    <div id="victory" class="modal hidden">
+      <div class="modal-content">
+        <h2>Victory!</h2>
+        <p>You've reached 2048!</p>
+        <p>Keep playing to reach higher scores?</p>
+        <button id="continue">Continue</button>
+        <button id="restart-victory">New Game</button>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
