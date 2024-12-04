@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Search - SIEAN GAMES</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Word Search</h1>
+            <a href="../index.html" class="btn btn-outline-primary back-btn">← Kembali ke Menu</a>
+        </header>
+
+        <div class="game-container">
+            <div class="game-info">
+                <div id="timer">Time: 0:00</div>
+                <div id="found-words">Found: 0/10</div>
+            </div>
+
+            <div class="word-list">
+                <h3>Words to Find:</h3>
+                <ul id="words"></ul>
+            </div>
+
+            <div class="grid-container">
+                <div id="grid" class="grid"></div>
+            </div>
+
+            <div class="controls">
+                <button id="newGameBtn" class="btn btn-primary">New Game</button>
+                <select id="difficulty" class="form-select">
+                    <option value="easy">Easy (8x8)</option>
+                    <option value="medium">Medium (10x10)</option>
+                    <option value="hard">Hard (12x12)</option>
+                </select>
+            </div>
+
+            <div class="instructions">
+                <h4>How to Play:</h4>
+                <p>Find all words from the list in the grid. Words can be placed horizontally, vertically, or diagonally.
+                Click and drag to select letters. Found words will be highlighted.</p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

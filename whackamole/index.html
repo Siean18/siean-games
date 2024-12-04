@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whack-a-Mole - SIEAN GAMES</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Whack-a-Mole</h1>
+            <a href="../index.html" class="btn btn-outline-primary back-btn">← Kembali ke Menu</a>
+        </header>
+
+        <div class="game-container">
+            <div class="game-info">
+                <div id="score">Score: 0</div>
+                <div id="time">Time: 30s</div>
+                <div id="high-score">High Score: 0</div>
+            </div>
+
+            <div class="game-board">
+                <div class="hole"><div class="mole"></div></div>
+                <div class="hole"><div class="mole"></div></div>
+                <div class="hole"><div class="mole"></div></div>
+                <div class="hole"><div class="mole"></div></div>
+                <div class="hole"><div class="mole"></div></div>
+                <div class="hole"><div class="mole"></div></div>
+                <div class="hole"><div class="mole"></div></div>
+                <div class="hole"><div class="mole"></div></div>
+                <div class="hole"><div class="mole"></div></div>
+            </div>
+
+            <button id="startButton" class="btn btn-primary">Start Game</button>
+            
+            <div class="instructions">
+                Click or tap the moles when they pop up!
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

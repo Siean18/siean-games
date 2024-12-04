@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Racing Game - SIEAN GAMES</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Racing Game</h1>
+            <a href="../index.html" class="btn btn-outline-primary back-btn">← Kembali ke Menu</a>
+        </header>
+
+        <div class="game-container">
+            <div class="game-info">
+                <div class="score">Score: <span id="score">0</span></div>
+                <div class="speed">Speed: <span id="speed">0</span> km/h</div>
+                <div class="distance">Distance: <span id="distance">0</span> m</div>
+            </div>
+
+            <div class="game-board">
+                <canvas id="gameCanvas"></canvas>
+            </div>
+
+            <div class="controls">
+                <button id="startBtn" class="btn btn-primary">Start Game</button>
+                <div class="control-info">
+                    <p>Use ← → arrows to move</p>
+                    <p>Space to boost speed</p>
+                </div>
+            </div>
+
+            <div class="instructions">
+                <h4>How to Play:</h4>
+                <p>Avoid obstacles and other cars. Use arrow keys to move left and right.
+                   Press space for speed boost. The longer you survive, the higher your score!</p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

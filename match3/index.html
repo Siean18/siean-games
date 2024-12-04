@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match-3 Game - SIEAN GAMES</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Match-3 Game</h1>
+            <a href="../index.html" class="btn btn-outline-primary back-btn">← Kembali ke Menu</a>
+        </header>
+
+        <div class="game-container">
+            <div class="game-info">
+                <div class="score">Score: <span id="score">0</span></div>
+                <div class="moves">Moves: <span id="moves">0</span></div>
+                <div class="time">Time: <span id="time">0:00</span></div>
+            </div>
+
+            <div class="game-board">
+                <canvas id="gameCanvas"></canvas>
+            </div>
+
+            <div class="controls">
+                <button id="newGameBtn" class="btn btn-primary">New Game</button>
+                <button id="hintBtn" class="btn btn-info">Hint</button>
+            </div>
+
+            <div class="instructions">
+                <h4>How to Play:</h4>
+                <p>Swap adjacent candies to create matches of 3 or more of the same color.
+                   Create longer matches for bonus points! Special candies appear for matches of 4 or more.</p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

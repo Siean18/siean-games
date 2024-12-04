@@ -1,0 +1,116 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f2f5;
+}
+
+.container {
+    max-width: 800px;
+    padding: 2rem;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.back-btn {
+    margin-bottom: 2rem;
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.game-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    background: #8b5e3c;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.hole {
+    width: 100px;
+    height: 100px;
+    background: #3a2618;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.mole {
+    width: 80px;
+    height: 80px;
+    background: #8b4513;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -80px;
+    transition: bottom 0.1s;
+    cursor: pointer;
+}
+
+.mole.active {
+    bottom: 0;
+}
+
+.mole:hover {
+    background: #a0522d;
+}
+
+.mole.bonked {
+    background: #cd853f;
+}
+
+.instructions {
+    margin-top: 1rem;
+    color: #666;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .game-board {
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+
+    .hole {
+        width: 80px;
+        height: 80px;
+    }
+
+    .mole {
+        width: 60px;
+        height: 60px;
+        bottom: -60px;
+    }
+}
